@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'users',
     'movies',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -90,6 +91,18 @@ DATABASES = {
 
 SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.environ['DEBUG']
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+}
 
 
 # Password validation
