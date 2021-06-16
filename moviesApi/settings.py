@@ -19,8 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@%p6doey29-y!irn1ou#h#spqo7p)l_(kw$-f^=!adq$1@u&40'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -30,19 +29,32 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+BASE_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'ckeditor',
+]
+
+LOCAL_APPS = [
     'users',
     'movies',
-    'rest_framework.authtoken',
 ]
+
+THIRD_APPS = [
+    'rest_framework',
+    'ckeditor',
+    'rest_framework.authtoken',
+    'drf_yasg',
+]
+
+INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
+
+SWAGGER_SETTINGS = {
+    'DOC_EXPANSION': 'none',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

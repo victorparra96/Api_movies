@@ -1,3 +1,9 @@
+# Python
+from datetime import datetime
+
+# Django
+from django.contrib.sessions.models import Session
+
 # Django REST Framework
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
@@ -26,6 +32,18 @@ class UserViewSet(viewsets.GenericViewSet):
             'access_token': token
         }
         return Response(data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['post'])
+    def logout(self, request):
+        all_sessions = Session.objects.filter(expire_date__gte = datetime.now())
+        if all_sessions.exists():
+            for session in all_sessions:
+                session_data = session.get_decoded()
+                if self.context['user'].id == int(session_data.get('_auth_user_id')):
+                    session.delete()
+        request.user.auth_token.delete()
+        data = {'success': 'Sucessfully logged out'}
+        return Response(data=data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
     def signup(self, request):

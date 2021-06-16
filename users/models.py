@@ -6,7 +6,7 @@ from ckeditor.fields import RichTextField
 class User(AbstractUser):
     email = models.EmailField('email address', unique=True)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username', 'password']
 
     modified = models.DateTimeField(auto_now=True)
     photo = models.ImageField(null=True, upload_to='users')

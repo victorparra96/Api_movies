@@ -1,6 +1,10 @@
+# Python
+from datetime import datetime
+
 # Django
 from django.contrib.auth import password_validation, authenticate
 from django.core.validators import RegexValidator, FileExtensionValidator
+from django.contrib.sessions.models import Session
 
 # Django REST Framework
 from rest_framework import serializers
@@ -43,7 +47,20 @@ class UserLoginSerializer(serializers.Serializer):
     def create(self, data):
         """Generar o recuperar token."""
         token, created = Token.objects.get_or_create(user=self.context['user'])
-        return self.context['user'], token.key
+        if created:
+            return self.context['user'], token.key
+        else:
+            # Si ya tiene sesion abierta, elimina la sesion
+            all_sessions = Session.objects.filter(expire_date__gte = datetime.now())
+            if all_sessions.exists():
+                for session in all_sessions:
+                    session_data = session.get_decoded()
+                    if self.context['user'].id == int(session_data.get('_auth_user_id')):
+                        session.delete()
+            # Elimina el token guardado y crea uno nuevo
+            token.delete()
+            token = Token.objects.create(user=self.context['user'])
+            return self.context['user'], token.key
 
 class UserSignUpSerializer(serializers.Serializer):
 
