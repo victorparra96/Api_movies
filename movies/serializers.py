@@ -18,10 +18,7 @@ class MoviesModelSerializer(serializers.ModelSerializer):
 
         model = Movies
         fields = (
-            'name',
-            'gender',
-            'author',
-            'duration',
+            '__all__'
         )
 
 class MoviesSerializer(serializers.Serializer):

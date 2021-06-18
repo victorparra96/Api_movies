@@ -6,14 +6,36 @@ from django.contrib.sessions.models import Session
 
 # Django REST Framework
 from rest_framework import mixins, status, viewsets
+from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 # Serializers
-from users.serializers import UserLoginSerializer, UserModelSerializer, UserSignUpSerializer
+from users.serializers import UserLoginSerializer, UserModelSerializer, UserSignUpSerializer, UserTokenSerializer
+
+# Authentication
+from users.authentication_mixins import Authentication
 
 # Models
 from users.models import User
+
+class UserToken(Authentication, APIView):
+    """
+    Validate Token
+    """
+    def get(self, request, *args, **kwargs):        
+        try:
+            user_token = Token.objects.get(user = self.user)
+            user = UserTokenSerializer(self.user)
+            return Response({
+                'token': user_token.key,
+                'user': user.data
+            })
+        except:
+            return Response({
+                'error': 'Credenciales enviadas incorrectas.'
+            },status = status.HTTP_400_BAD_REQUEST)
 
 class UserViewSet(viewsets.GenericViewSet):
 

@@ -26,6 +26,11 @@ class UserModelSerializer(serializers.ModelSerializer):
             'email'
         )
 
+class UserTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username','email')
+
 class UserLoginSerializer(serializers.Serializer):
 
     # Campos que vamos a requerir
