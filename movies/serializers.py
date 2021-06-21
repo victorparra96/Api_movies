@@ -32,8 +32,7 @@ class MoviesSerializer(serializers.Serializer):
         validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])], 
         required=False
     )
-    duration_hour = serializers.IntegerField()
-    duration_minute = serializers.IntegerField()
+    duration = serializers.DurationField()
     date_launch = serializers.DateField()
     description = serializers.CharField(max_length=1000, required=False)
 
@@ -50,8 +49,5 @@ class MoviesSerializer(serializers.Serializer):
         return data
 
     def create(self, data):
-        data['duration'] = timedelta(hours=data['duration_hour'], minutes=data['duration_minute'])
-        data.pop('duration_hour')
-        data.pop('duration_minute')
         movies = Movies.objects.create(**data)
         return movies
