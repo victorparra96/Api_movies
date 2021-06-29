@@ -1,6 +1,8 @@
 # Django REST Framework
 from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import action
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Permissions
 from rest_framework.permissions import IsAuthenticated
@@ -18,6 +20,8 @@ class MoviesViewSet(mixins.ListModelMixin,
                         viewsets.GenericViewSet):
 
     serializer_class = MoviesModelSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['gender']
 
     def get_permissions(self):
         permission_classes = [IsAuthenticated]

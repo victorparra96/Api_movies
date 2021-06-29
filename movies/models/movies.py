@@ -1,10 +1,18 @@
+"""Movies model"""
+
+# Django
 from django.db import models
+
+# Models
 from users.models import User
 
 # django-ckeditor
 from ckeditor.fields import RichTextField
 
-class Movies(models.Model):
+# Utils
+from movies.utils.models import MovieModel
+
+class Movies(MovieModel):
     gender_choices = [
         ('AC', 'Action'),
         ('SE', 'Serie'),
@@ -26,6 +34,8 @@ class Movies(models.Model):
     duration = models.DurationField()
     date_launch = models.DateField()
     description = RichTextField(null=True)
+    ranking_movie = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.name}'

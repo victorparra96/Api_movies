@@ -48,6 +48,7 @@ THIRD_APPS = [
     'ckeditor',
     'rest_framework.authtoken',
     'drf_yasg',
+    'django_filters',
 ]
 
 INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
@@ -115,7 +116,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 12,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 

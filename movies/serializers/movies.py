@@ -1,6 +1,3 @@
-# Python
-from datetime import timedelta
-
 # Django
 from django.core.validators import FileExtensionValidator
 
@@ -9,6 +6,7 @@ from rest_framework import serializers
 
 # Model
 from movies.models import Movies
+
 
 class MoviesModelSerializer(serializers.ModelSerializer):
     """Movies Model Serializer"""
