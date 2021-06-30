@@ -14,8 +14,6 @@ class Comment(MovieModel):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE)
     movie = models.ForeignKey('movies.Movies', on_delete=models.CASCADE)
     description = RichTextField(null=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
