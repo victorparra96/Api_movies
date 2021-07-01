@@ -57,12 +57,12 @@ class UserViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, methods=['post'])
     def logout(self, request):
-        all_sessions = Session.objects.filter(expire_date__gte = datetime.now())
+        """ all_sessions = Session.objects.filter(expire_date__gte = datetime.now())
         if all_sessions.exists():
             for session in all_sessions:
                 session_data = session.get_decoded()
                 if self.context['user'].id == int(session_data.get('_auth_user_id')):
-                    session.delete()
+                    session.delete() """
         request.user.auth_token.delete()
         data = {'success': 'Sucessfully logged out'}
         return Response(data=data, status=status.HTTP_200_OK)

@@ -1,4 +1,5 @@
 # Django
+from movies.models.rankings import Ranking
 from django.contrib import admin
 
 # Models
@@ -24,3 +25,7 @@ class MoviesAdmin(admin.ModelAdmin):
     )
 
     readonly_fields = ('date_launch',)
+
+@admin.register(Ranking)
+class RankingAdmin(admin.ModelAdmin):
+    """Ranking admin."""

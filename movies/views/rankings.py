@@ -1,6 +1,7 @@
 """Ranking views"""
 
 # Django Rest Framework
+from movies.models.rankings import Ranking
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
@@ -16,10 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from movies.serializers.rankings import RankingModelSerializer, AddRankingSerializer
 
 
-class RankingViewSet(mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.DestroyModelMixin,
+class RankingViewSet(mixins.CreateModelMixin,
                         viewsets.GenericViewSet):
     """Ranking view set"""
 
@@ -35,8 +33,14 @@ class RankingViewSet(mixins.ListModelMixin,
         permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
+    def get_queryset(self):
+        queryset = Ranking.objects.all()
+        return queryset
+
     def create(self, request, *args, **kwargs):
-        serializer = AddRankingSerializer(data=request.data, context={"request": self.request})
+        serializer = AddRankingSerializer(
+            data=request.data, 
+            context={'movie': self.movie, "request": self.request})
         serializer.is_valid(raise_exception=True)
         ranking = serializer.save()
         data = RankingModelSerializer(ranking).data

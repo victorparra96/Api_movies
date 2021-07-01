@@ -34,7 +34,7 @@ class Movies(MovieModel):
     duration = models.DurationField()
     date_launch = models.DateField()
     description = RichTextField(null=True)
-    ranking_movie = models.IntegerField(default=0)
+    ranking_movie = models.DecimalField(default=0, max_digits=2, decimal_places=1)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
