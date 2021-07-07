@@ -1,6 +1,4 @@
 # Django REST Framework
-from movies.models import movies
-from movies.models.movies import Movies
 from rest_framework import serializers
 
 # Model

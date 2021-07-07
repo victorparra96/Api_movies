@@ -10,6 +10,7 @@ from rest_framework.test import APIClient
 # Models
 from movies.models import Movies
 from users.models import User
+from movies.models.comments import Comment
 
 
 class TestSetUp(TestCase):
@@ -43,6 +44,12 @@ class TestSetUp(TestCase):
             duration='02:30:00',
             date_launch='1977-10-19',
             user=user
+        )
+
+        self.comment = Comment.objects.create(
+            user=user,
+            movie=self.movie,
+            description="sdfsdfsdfsdfdsfsdfdfsffsdf"
         )
 
         client = APIClient()

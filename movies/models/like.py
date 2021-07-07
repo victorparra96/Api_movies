@@ -9,7 +9,8 @@ from movies.utils.models import MovieModel
 
 class Like(MovieModel):
     comment = models.ForeignKey('movies.Comment', on_delete=models.CASCADE)
-    like = models.BooleanField(default=False)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, null=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return '{} at {}'.format(self.pk, self.comment)
+        return '{} - {} - {}'.format(self.pk, self.comment.pk, self.user.username)

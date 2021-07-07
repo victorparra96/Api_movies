@@ -3,6 +3,9 @@
 # Django
 from django.db import models
 
+# Models
+from movies.models.movies import Movies
+
 # Utils
 from movies.utils.models import MovieModel
 

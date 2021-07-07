@@ -1,47 +1,53 @@
-"""List_movies views"""
+"""Comment views"""
 
 # Django Rest Framework
 from rest_framework import mixins, status, viewsets
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 # Models
-from movies.models.list_movies import List_movie
 from movies.models.movies import Movies
+from movies.models.comments import Comment
 
 # Permissions
 from rest_framework.permissions import IsAuthenticated
 
 # Serializers
-from movies.serializers.list_movies import ListMoviesModelSerializer, AddListMoviesSerializer
+from movies.serializers.comments import CommentModelSerializer, AddCommentSerializer
 
 
-class ListMovieViewSet(mixins.CreateModelMixin,
+class CommentViewSet(mixins.CreateModelMixin,
                         mixins.ListModelMixin,
                         mixins.DestroyModelMixin,
                         viewsets.GenericViewSet):
-    """List_Movie view set"""
+    """Comment view set"""
 
-    serializer_class = ListMoviesModelSerializer
+    serializer_class = CommentModelSerializer
+
+    def dispatch(self, request, *args, **kwargs):
+        """Verify that the movie exists"""
+        pk = kwargs['slug_name']
+        self.movie = get_object_or_404(Movies, pk=pk)
+        return super(CommentViewSet, self).dispatch(request, *args, **kwargs)
 
     def get_permissions(self):
         permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        """Get a list movies for user"""
-        queryset = List_movie.objects.filter(user=self.request.user, is_active=True)
+        queryset = Comment.objects.filter(movie=self.movie, is_active=True)
         return queryset
 
     def perform_destroy(self, instance):
-        """Disable list_movie"""
+        """Disable comment"""
         instance.is_active = False
         instance.save()
 
     def create(self, request, *args, **kwargs):
-        serializer = AddListMoviesSerializer(
+        serializer = AddCommentSerializer(
             data=request.data, 
-            context={"request": self.request})
+            context={'movie': self.movie, "request": self.request})
         serializer.is_valid(raise_exception=True)
-        list_movie = serializer.save()
-        data = ListMoviesModelSerializer(list_movie).data
+        comment = serializer.save()
+        data = CommentModelSerializer(comment).data
         return Response(data, status=status.HTTP_201_CREATED)
