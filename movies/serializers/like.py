@@ -4,9 +4,14 @@ from rest_framework import serializers
 # Model
 from movies.models.like import Like
 
+# Utils
+from movies.utils.methods import validate_if_user_add_message
+
 
 class LikeModelSerializer(serializers.ModelSerializer):
     """Like Model Serializer"""
+
+    user = serializers.StringRelatedField()
 
     class Meta:
         """Meta class."""
@@ -31,8 +36,7 @@ class AddLikeSerializer(serializers.Serializer):
         user = data['user']
         comment = self.context['comment']
         query = Like.objects.filter(user=user, comment=comment, is_active=True)
-        if query.exists():
-            raise serializers.ValidationError(f'User is already added like to comment')
+        validate_if_user_add_message(query, "like to comment")
         return data
 
     def create(self, data):

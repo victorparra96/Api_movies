@@ -2,12 +2,12 @@
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
-# Serializers
-from movies.serializers.movies import MoviesModelSerializer
-
 # Model
 from movies.models import List_movie
 from movies.models.movies import Movies
+
+# Utils
+from movies.utils.methods import validate_if_user_add_message
 
 
 class ListMoviesModelSerializer(serializers.ModelSerializer):
@@ -39,9 +39,7 @@ class AddListMoviesSerializer(serializers.Serializer):
         movie = data['movie']
         # methods.validate_if_user_add(List_movie, user, movie, "List_movie")
         query = List_movie.objects.filter(user=user, movie=movie, is_active=True)
-        if query.exists():
-            raise serializers.ValidationError(
-                'User is already added list_movie')
+        validate_if_user_add_message(query, "list_movie")
         return data
 
     def create(self, data):

@@ -16,6 +16,7 @@ from movies.models.comments import Comment
 class TestSetUp(TestCase):
 
     def setUp(self):
+        # Create model for user
         user = User(
                     email='testing_login@cosasdedevs.com',
                     first_name='Testing',
@@ -46,12 +47,14 @@ class TestSetUp(TestCase):
             user=user
         )
 
+        # Create model for comment
         self.comment = Comment.objects.create(
             user=user,
             movie=self.movie,
             description="sdfsdfsdfsdfdsfsdfdfsffsdf"
         )
 
+        # Login
         client = APIClient()
         response = client.post(
                 '/users/login/', {
@@ -65,6 +68,7 @@ class TestSetUp(TestCase):
         self.access_token = result['access_token']
         self.user = user
 
+        # Authenticacion
         self.client = APIClient()
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.access_token)
 

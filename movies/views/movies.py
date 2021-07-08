@@ -21,6 +21,7 @@ class MoviesViewSet(mixins.ListModelMixin,
     serializer_class = MoviesModelSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['gender']
+    ordering_fields = ['gender', 'ranking_movie']
 
     def get_permissions(self):
         permission_classes = [IsAuthenticated]

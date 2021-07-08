@@ -42,6 +42,9 @@ class LikeViewSet(mixins.CreateModelMixin,
     def perform_destroy(self, instance):
         """Disable like"""
         instance.is_active = False
+        # Dislike
+        self.comment.comment_like = self.comment.comment_like - 1
+        self.comment.save()
         instance.save()
 
     def create(self, request, *args, **kwargs):
