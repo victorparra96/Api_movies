@@ -35,7 +35,7 @@ class CommentViewSet(mixins.CreateModelMixin,
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        queryset = Comment.objects.filter(movie=self.movie, is_active=True)
+        queryset = Comment.objects.select_related().filter(movie=self.movie, is_active=True)
         return queryset
 
     def perform_destroy(self, instance):

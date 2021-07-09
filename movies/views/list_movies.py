@@ -29,7 +29,7 @@ class ListMovieViewSet(mixins.CreateModelMixin,
 
     def get_queryset(self):
         """Get a list movies for user"""
-        queryset = List_movie.objects.filter(user=self.request.user, is_active=True)
+        queryset = List_movie.objects.select_related().filter(user=self.request.user, is_active=True)
         return queryset
 
     def perform_destroy(self, instance):

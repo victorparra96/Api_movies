@@ -1,6 +1,9 @@
 # Django REST Framework
 from rest_framework import serializers
 
+# Django
+from django.db.models import Avg
+
 # Model
 from movies.models import Ranking
 
@@ -53,10 +56,16 @@ class AddRankingSerializer(serializers.Serializer):
             value=data['value']
         )
 
-        # Update movies in column ranking
-        query = Ranking.objects.filter(movie=movie).values_list('value')
-        average = sum(map(sum, list(query)))/len(query)
-        movie.ranking_movie = average
+        # Calculate ranking avergare and update movies in column ranking
+
+        ranking_avg = round(
+            Ranking.objects.filter(
+                movie=movie
+            ).aggregate(Avg('value'))['value__avg'],
+            1
+        )
+
+        movie.ranking_movie = ranking_avg
         movie.save()
 
         return ranking

@@ -35,7 +35,7 @@ class AddLikeSerializer(serializers.Serializer):
 
         user = data['user']
         comment = self.context['comment']
-        query = Like.objects.filter(user=user, comment=comment, is_active=True)
+        query = Like.objects.select_related().filter(user=user, comment=comment, is_active=True)
         validate_if_user_add_message(query, "like to comment")
         return data
 

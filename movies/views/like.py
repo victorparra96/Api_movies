@@ -36,7 +36,7 @@ class LikeViewSet(mixins.CreateModelMixin,
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        queryset = Like.objects.filter(is_active=True, comment=self.comment)
+        queryset = Like.objects.select_related().filter(is_active=True, comment=self.comment)
         return queryset
 
     def perform_destroy(self, instance):

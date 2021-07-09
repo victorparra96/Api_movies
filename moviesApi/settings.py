@@ -49,6 +49,7 @@ THIRD_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
     'django_filters',
+    'django_extensions',
 ]
 
 INSTALLED_APPS = BASE_APPS + LOCAL_APPS + THIRD_APPS
@@ -151,7 +152,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

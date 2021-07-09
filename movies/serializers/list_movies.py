@@ -37,8 +37,7 @@ class AddListMoviesSerializer(serializers.Serializer):
         """Validate if the user added a movie"""
         user = data['user']
         movie = data['movie']
-        # methods.validate_if_user_add(List_movie, user, movie, "List_movie")
-        query = List_movie.objects.filter(user=user, movie=movie, is_active=True)
+        query = List_movie.objects.select_related().filter(user=user, movie=movie, is_active=True)
         validate_if_user_add_message(query, "list_movie")
         return data
 

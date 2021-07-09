@@ -34,7 +34,7 @@ class RankingViewSet(mixins.CreateModelMixin,
         return [permission() for permission in permission_classes]
 
     def get_queryset(self):
-        queryset = Ranking.objects.all()
+        queryset = Ranking.objects.all().select_related()
         return queryset
 
     def create(self, request, *args, **kwargs):
